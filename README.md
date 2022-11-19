@@ -1,41 +1,30 @@
 # chaussette-moto-esgi
 
-This template should help get you started developing with Vue 3 in Vite.
+Vous faites partie d’un grand groupe moto qui souhaite moderniser sa plateforme avec la mise en
+place d’un système d'échange instantané afin de renforcer sa communication auprès de ses clients.
 
-## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Project install
 
 ```sh
+git clone git@github.com:pboitelle/chaussette-moto-esgi.git
+```
+
+## Setup Client
+
+```sh
+cd client/
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Launch Development Client
 
 ```sh
-npm run dev
+npm run start:client
 ```
 
 ### Compile and Minify for Production
 
 ```sh
 npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
 ```
