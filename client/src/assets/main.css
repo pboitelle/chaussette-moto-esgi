@@ -1,0 +1,10 @@
+#app{
+  width: 100%;
+  height: auto;
+}
+
+.main{
+  color: #fff;
+  background-color: #212529;
+  min-height: 100vh;
+}
