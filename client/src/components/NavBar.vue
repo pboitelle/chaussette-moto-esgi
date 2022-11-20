@@ -38,8 +38,8 @@ import { RouterLink } from 'vue-router'
                  
                 </ul>
 
-                <button class="btn btn-success" type="submit">Se connecter</button>
-                <button class="btn btn-outline-success" type="submit">S'inscrire</button>
+                <RouterLink to="/login" class="btn btn-success">Se connecter</RouterLink>
+                <RouterLink to="/register" class="btn btn-outline-success">S'inscrire</RouterLink>
 
             </div>
         </div>

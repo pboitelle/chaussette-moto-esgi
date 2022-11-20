@@ -9,7 +9,6 @@ lerna-debug.log*
 
 node_modules
 client/node_modules
-docker-compose.yaml
 .DS_Store
 dist
 dist-ssr
@@ -28,3 +27,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+server/mysql
+server/mysql/*
+server/.npm
+server/.node_repl_history
