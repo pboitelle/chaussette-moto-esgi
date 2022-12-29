@@ -10,8 +10,37 @@ import crossSVG from './assets/cross.svg'
 
 const showModal = ref(false)
 
+const text = ref('');
+
+const onclick = () => {
+  socket.send(text.value);
+}
+
+const socket = new WebSocket("ws://localhost:3000");
 const openModal = () => {
     showModal.value = !showModal.value
+
+    socket.addEventListener("open", () => {
+      // send a message to the server
+      socket.send(JSON.stringify({
+        type: "hello from client",
+        content: [ 3, "4" ]
+      }));
+    });
+
+    // receive a message from the server
+    socket.addEventListener("message", ({ data }) => {
+
+      // console.log('Message from server ', data);
+      const packet = JSON.parse(data);
+
+      switch (packet.type) {
+        case "hello from server":
+          // ...
+          break;
+      }
+    });
+
 }
 
 const closeModal = () => {
@@ -34,7 +63,8 @@ const closeModal = () => {
   </div>
   
   <Modal :showModal="showModal" title="Vieux motard que jamais !" :close="closeModal">
-    <p>Contenu du modal</p>
+    <input v-model="text" type="text">
+    <button v-on:click="onclick" name="button"></button>
   </Modal>
   
 </template>
