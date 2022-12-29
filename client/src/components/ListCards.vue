@@ -29,7 +29,7 @@
             <div class="card">
                 <img src="../assets/img/promo3.jpg" class="card-img-bottom" alt="promo3">
                 <div class="card-body">
-                    <h5 class="card-title">Aprilia Tuono 660</h5>
+                    <h5 class="card-title">Aprilia RS 660</h5>
                     <p class="card-text">660 € d'avantages client jusqu'au 31 mai 2022, soit 9 939 € au lieu de 10 599</p>
                     <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
                 </div>
