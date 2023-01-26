@@ -20,11 +20,16 @@ server.on("connection", (socket) => {
     //     break;
     // }
 
-    switch (String(data)) {
-        case "a":
-            console.log('a');
-            break;
+    switch (true) {
+      case data === "Je souhaiterais des informations sur les véhicules":
+        console.log("Oui, pour quel usage souhaitez-vous en faire ?");
+        console.log(data);
+        socket.emit('reponse', "Quel est l'usage que vous souhaitez pour votre véhicule (routier, tout-terrain, sportif, etc.)?");
+        break;
+      case text.value.includes(data):
+        // Traitez la question de l'utilisateur ici
+        break;
     }
-
   });
+  
 });
