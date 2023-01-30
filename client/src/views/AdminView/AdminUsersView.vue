@@ -36,3 +36,14 @@ export default {
   }
 }
 </script>
+
+
+<style scoped>
+th {
+  color: #f5f5f5;
+}
+
+td {
+  color: #f5f5f5;
+}
+</style>
