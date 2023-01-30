@@ -7,6 +7,7 @@ import path, { dirname } from "path"
 import { fileURLToPath } from 'url'
 import cors from "cors"
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -26,7 +27,7 @@ server.use(express.static(path.join(__dirname, "client/src")))
 const httpServer = createServer(server)
 
 
-httpServer.listen(9000, "0.0.0.0", () => {
+httpServer.listen(9000, () => {
     console.log("Http server listening")
 })
 
@@ -110,7 +111,6 @@ server.get('/api/secret-route', (req, res) => {
   })
 });
 
-
 /**
  * Socket.io server
  */
@@ -120,6 +120,29 @@ const io = new Server(httpServer, {
     }
 })
 
-io.on("connection", () => {
-    console.log("New connection")
+io.on("connection", (socket) => {
+    console.log("New connection");
+
+    // receive a message from the client
+  socket.on("message", (data) => {
+    console.log('Message from server ', data);
+    // const packet = JSON.parse(data);
+
+    // switch (packet.type) {
+    //   case "hello from client":
+    //     // ...
+    //     break;
+    // }
+
+    switch (true) {
+      case data === "Je souhaiterais des informations sur les véhicules":
+        console.log("Oui, pour quel usage souhaitez-vous en faire ?");
+        console.log(data);
+        socket.emit('reponse', "Quel est l'usage que vous souhaitez pour votre véhicule (routier, tout-terrain, sportif, etc.)?");
+        break;
+      case text.value.includes(data):
+        // Traitez la question de l'utilisateur ici
+        break;
+    }
+  });
 })

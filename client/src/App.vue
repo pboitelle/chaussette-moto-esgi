@@ -7,16 +7,21 @@ import Modal from './components/Modal.vue'
 
 import chatbotSVG from './assets/chatbot.svg'
 import crossSVG from './assets/cross.svg'
+import io from 'socket.io-client'
+
+var socket = io("http://localhost:9000");
 
 const showModal = ref(false)
 
 const openModal = () => {
     showModal.value = !showModal.value
+    socket.emit('connection')
 }
 
 const closeModal = () => {
     showModal.value = false
 }
+
 </script>
 
 <template>
