@@ -71,15 +71,43 @@ server.post('/api/auth', function(request, response) {
 				request.session.loggedin = true;
 				request.session.email = email;
         request.session.save()
+
+        response.json({
+          success: true
+        });
 			} else {
-				response.send('Incorrect Username and/or Password!');
+				response.json({
+          success: false,
+          message: "Incorrect email or password"
+        });
 			}			
 			response.end();
 		});
 	} else {
-		response.send('Please enter Username and Password!');
-		response.end();
+		response.json({
+      success: false,
+      message: "Please enter email and password"
+    });
 	}
+});
+server.get('/api/logout', function(request, response) {
+  request.session.destroy()
+  response.json({
+    success: true
+  })
+});
+server.get('/api/secret-route', (req, res) => {
+  if (!req.session.isLoggedIn) {
+    res.json({
+      success: false,
+      message: "You are not logged in"
+    })
+  }
+
+  res.json({
+    success: true,
+    message: "You are logged in"
+  })
 });
 
 
