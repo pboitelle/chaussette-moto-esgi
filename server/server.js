@@ -414,7 +414,7 @@ io.on("connection", (socket) => {
     // console.log('Message from server ', data);
     switch (true) {
       case data === "Je souhaiterais des informations sur les véhicules":
-      var response = "Quel est le type d'usage que vous souhaitez pour votre véhicule ?";
+      var response = "Quel est le type d'usage que vous souhaitez pour votre véhicule ?" + "usage routier, usage tout-terrain, usage sportif";
       socket.emit('response', response);
       break;
       case data.includes("usage routier"):
@@ -427,6 +427,15 @@ io.on("connection", (socket) => {
       break;
       case data.includes("usage sportif"):
       var response = "Nous vous proposons un essai sur piste. Les rendez-vous piste sont isolés des autres rendez-vous.";
+      socket.emit('response', response);
+      break;
+      case data.includes("fin"):
+      var response = "deconnexion";
+      location.reload();
+      socket.emit('response', response);
+      break;
+      case data.includes("redémarrer"):
+      var response = "Quel est le type d'usage que vous souhaitez pour votre véhicule ?" + "usage routier, usage tout-terrain, usage sportif" + "mettre fin ou redémarrer: fin, redémarrer";
       socket.emit('response', response);
       break;
       }
