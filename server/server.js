@@ -124,7 +124,7 @@ io.on("connection", (socket) => {
     console.log("New connection");
 
     // receive a message from the client
-  socket.on("message", (data) => {
+  socket.on('message', (data) => {
     console.log('Message from server ', data);
     // const packet = JSON.parse(data);
 

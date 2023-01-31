@@ -12,22 +12,31 @@ import io from 'socket.io-client'
 var socket = io("http://localhost:9000");
 
 const showModal = ref(false)
+var input = document.getElementById('input');
 
 const openModal = () => {
   showModal.value = !showModal.value
-  socket.emit('connection');
+  // socket.emit('connection');
+  // le ligne ci-dessous permet de se connecter au serveur socket.io et de recevoir les messages du serveur socket.io
+  // "open" est un événement qui est émis par socket.io quand la connexion est établie avec le serveur socket.io
   socket.addEventListener("open", () => {
+    console.log('Message from server ');
     // send a message to the server
-    socket.send(JSON.stringify({
-      type: "hello from client",
-      content: [ 3, "4" ]
-    }));
+    // socket.send(JSON.stringify({
+    //   type: "hello from client",
+    //   content: [ 3, "4" ]
+    // }));
+    if (input.value) {
+      socket.emit('message', input.value);
+      console.log('Message from server ', data);
+      input.value = '';
+    }
   });
 
   // receive a message from the server
   socket.addEventListener("message", ({ data }) => {
 
-  // console.log('Message from server ', data);
+  console.log('Message from server ', data);
   const packet = JSON.parse(data);
 
   switch (packet.type) {
@@ -59,7 +68,7 @@ const closeModal = () => {
   </div>
   
   <Modal :showModal="showModal" title="Vieux motard que jamais !" :close="closeModal">
-    <input v-model="text" type="text">
+    <input v-model="text" type="text" id="input">
     <button v-on:click="onclick" name="button"></button>
   </Modal>
   
