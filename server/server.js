@@ -125,24 +125,29 @@ io.on("connection", (socket) => {
 
     // receive a message from the client
   socket.on('message', (data) => {
-    console.log('Message from server ', data);
-    // const packet = JSON.parse(data);
-
-    // switch (packet.type) {
-    //   case "hello from client":
-    //     // ...
-    //     break;
-    // }
-
+    // console.log('Message from server ', data);
     switch (true) {
       case data === "Je souhaiterais des informations sur les véhicules":
-        console.log("Oui, pour quel usage souhaitez-vous en faire ?");
-        console.log(data);
-        socket.emit('reponse', "Quel est l'usage que vous souhaitez pour votre véhicule (routier, tout-terrain, sportif, etc.)?");
-        break;
-      case text.value.includes(data):
-        // Traitez la question de l'utilisateur ici
-        break;
-    }
+      var response = "Quel est le type d'usage que vous souhaitez pour votre véhicule ?";
+      socket.emit('response', response);
+      break;
+      case data.includes("usage routier"):
+      var response = "Nous vous proposons un essai routier. Les rendez-vous routiers sont isolés des autres rendez-vous.";
+      socket.emit('response', response);
+      break;
+      case data.includes("usage tout-terrain"):
+      var response = "Nous vous proposons un essai tout-terrain. Les rendez-vous tout-terrain sont isolés des autres rendez-vous.";
+      socket.emit('response', response);
+      break;
+      case data.includes("usage sportif"):
+      var response = "Nous vous proposons un essai sur piste. Les rendez-vous piste sont isolés des autres rendez-vous.";
+      socket.emit('response', response);
+      break;
+      }
+      
+      
+      
+      
+      
   });
 })
