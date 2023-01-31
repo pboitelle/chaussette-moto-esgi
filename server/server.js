@@ -27,7 +27,7 @@ const httpServer = createServer(server)
 
 
 httpServer.listen(9000, "0.0.0.0", () => {
-    console.log("Http server listening")
+  console.log("Http server listening")
 })
 
 
@@ -40,6 +40,21 @@ const connection = mysql.createPool({
     port: 3306
 });
 
+server.get("/api/conseillers", (req, res) => {
+  connection.query("SELECT * FROM conseiller", (err, rows) => {
+    if (err) {
+      res.json({
+        success: false,
+        err,
+      });
+    } else {
+      res.json({
+        success: true,
+        rows,
+      });
+    }
+  });
+});
 server.get("/api/users", (req, res) => {
   connection.query("SELECT * FROM user", (err, rows) => {
     if (err) {
@@ -56,6 +71,7 @@ server.get("/api/users", (req, res) => {
   });
 });
 server.post('/api/auth', function(request, response) {
+  request.session.loggedin = false;
 	// Capture the input fields
 	let email = request.body.email;
 	let password = request.body.password;
@@ -97,7 +113,7 @@ server.get('/api/logout', function(request, response) {
   })
 });
 server.get('/api/secret-route', (req, res) => {
-  if (!req.session.isLoggedIn) {
+  if (!req.session.loggedin) {
     res.json({
       success: false,
       message: "You are not logged in"
@@ -110,6 +126,163 @@ server.get('/api/secret-route', (req, res) => {
   })
 });
 
+/*
+* API routes salons
+*/
+server.get("/api/salons", (req, res) => {
+  connection.query("SELECT * FROM salon", (err, rows) => {
+    if (err) {
+      res.json({
+        success: false,
+        err,
+      });
+    } else {
+      res.json({
+        success: true,
+        rows,
+      });
+    }
+  });
+});
+server.post('/api/salon/create', (req, res) => {
+  connection.query("INSERT INTO salon (nom, nb_max) VALUES (?, ?)", [req.body.nom, req.body.nb_max], (err, rows) => {
+    if (err) {
+      res.json({
+        success: false,
+        err,
+      });
+    } else {
+      res.json({
+        success: true,
+        rows,
+      });
+    }
+  });
+})
+server.delete('/api/salon/delete/:id', (req, res) => {
+  connection.query("DELETE FROM salon WHERE id = ?", [req.params.id], (err, rows) => {
+    if (err) {
+      res.json({
+        success: false,
+        err,
+      });
+    } else {
+      res.json({
+        success: true,
+        rows,
+      });
+    }
+  });
+})
+
+/*
+* API routes contact conseiller
+*/
+server.get("/api/demandes", (req, res) => {
+  connection.query("SELECT d.id, d.isAccepted, user.email, conseiller.nom, conseiller.prenom, d.id_conseiller FROM demandeCommunication as d INNER JOIN user ON user.id = d.id_user INNER JOIN conseiller ON conseiller.id = d.id_conseiller", (err, rows) => {
+    if (err) {
+      res.json({
+        success: false,
+        err,
+      });
+    } else {
+      res.json({
+        success: true,
+        rows,
+      });
+    }
+  });
+});
+server.post('/api/demande/contact', (req, res) => {
+  
+  connection.query("SELECT * FROM demandeCommunication WHERE id_user = ?", [1], (err, rows) => {
+    if (err) {
+      console.log(err)
+    } else {
+      if (rows.length > 0) {
+        res.json({
+          success: true,
+          rows
+        })
+      } else {
+        connection.query("INSERT INTO demandeCommunication (id_user, id_conseiller, isAccepted) VALUES (?, ?, ?)", [1, req.body.conseiller, 0], (err, rows) => {
+          if (err) {
+            console.log(err)
+          } else {
+            res.json({
+              success: true,
+              rows
+            })
+          }
+        });
+      }
+    }
+  });
+})
+server.get('/api/demande/check', (req, res) => {
+  
+  connection.query("SELECT d.id, d.isAccepted, user.email, conseiller.nom, conseiller.prenom, d.id_conseiller FROM demandeCommunication as d INNER JOIN user ON user.id = d.id_user INNER JOIN conseiller ON conseiller.id = d.id_conseiller WHERE id_user = ?", [1], (err, rows) => {
+    if (err) {
+      console.log(err)
+    } else {
+      if (rows.length > 0) {
+        res.json({
+          success: true,
+          rows
+        })
+      } else {
+        res.json({
+          success: false
+        })
+      }
+    }
+  });
+})
+server.post('/api/demande/accepted', (req, res) => {
+  let id_demande = req.body.id_demande;
+  let id_conseiller = req.body.id_conseiller;
+
+  connection.query("UPDATE demandeCommunication SET isAccepted = 1 WHERE id = ?", [id_demande], (err, rows) => {
+    if (err) {
+      console.log(err)
+    } else {
+      connection.query("UPDATE conseiller SET disponible = 0 WHERE id = ?", [id_conseiller], (err, rows) => {
+        if (err) {
+          console.log(err)
+        } else {
+        }
+      });
+
+      res.json({
+        success: true,
+        rows
+      })
+    }
+  });
+})
+server.post('/api/demande/refused', (req, res) => {
+  let id_demande = req.body.id_demande;
+  let id_conseiller = req.body.id_conseiller;
+
+  connection.query("DELETE FROM demandeCommunication WHERE id = ?", [id_demande], (err, rows) => {
+    if (err) {
+      console.log(err)
+    } else {
+      connection.query("UPDATE conseiller SET disponible = 1 WHERE id = ?", [id_conseiller], (err, rows) => {
+        if (err) {
+          console.log(err)
+        } else {
+        }
+      });
+
+      res.json({
+        success: true,
+        rows
+      })
+    }
+  });
+})
+
 
 /**
  * Socket.io server
@@ -120,6 +293,60 @@ const io = new Server(httpServer, {
     }
 })
 
-io.on("connection", () => {
-    console.log("New connection")
+
+/*
+  Socket.io events
+*/
+
+io.on("connection", socket => {
+
+  console.log("New connection")
+
+  socket.on("join", room => {
+    socket.join(room)
+  })
+
+  // socket message between conseiller/user
+  socket.on("messageConseiller", ({id_conseiller, message}) => {
+    connection.query("INSERT INTO communicationConseiller (id_user, id_conseiller, contenu) VALUES (?, ?, ?)", [1, id_conseiller, message], (err, rows) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(id_conseiller+" "+message)
+        socket.to(id_conseiller).emit("messageConseiller", {
+          client: socket.id,
+          message
+        })
+        
+      }
+    });
+  })
+
+
+  socket.on("joinSalon", salon => {
+    socket.join(salon)
+    console.log("Joined salon: " + salon)
+    socket.emit("joinSalon", {
+      identifier: salon
+    })
+  })
+  socket.on("leaveSalon", salon => {
+    socket.leave(salon)
+    console.log("Left salon: " + salon)
+    socket.emit("leaveSalon", salon)
+  })
+  socket.on("messageSalon", ({id_salon, message}) => {
+    connection.query("INSERT INTO communicationSalon (id_user, id_salon, contenu) VALUES (?, ?, ?)", [1, id_salon, message], (err, rows) => {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(id_salon+" "+message)
+
+        socket.to(id_salon).emit("messageSalon", {
+          client: socket.id,
+          message
+        })
+      }
+    });
+  })
 })

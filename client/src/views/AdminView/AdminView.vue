@@ -14,18 +14,10 @@ export default {
 </script>
 
 <template>
-    <main class="main">
-        <div class="admin">
-            <h1 class="text-center">Administration</h1>
-        </div>
-    </main>
+    <h1 class="text-center">Administration</h1>
 </template>
 
 <style scoped>
-.contact {
-  padding: 20px;
-}
-
 #sidebar-wrapper {
   position: fixed; /* Fixe le menu sur place */
   left: 0; /* Place le menu à gauche de la page */

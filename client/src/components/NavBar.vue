@@ -35,6 +35,10 @@ import { RouterLink } from 'vue-router'
                     <li class="nav-item">
                         <RouterLink to="/contact" class="nav-link">Contacter un conseiller</RouterLink>
                     </li>
+
+                    <li class="nav-item">
+                        <RouterLink to="/salons" class="nav-link">Discutez avec d'autres clients</RouterLink>
+                    </li>
                  
                 </ul>
 

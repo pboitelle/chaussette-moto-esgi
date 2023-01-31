@@ -9,6 +9,7 @@
                   <router-link class="list-group-item list-group-item-action bg-light" to="/admin/users">Users</router-link>
                   <router-link class="list-group-item list-group-item-action bg-light" to="/admin/communications">Communications</router-link>
                   <router-link class="list-group-item list-group-item-action bg-light" to="/admin/salons">Salons</router-link>
+                  <router-link class="list-group-item list-group-item-action bg-light" to="/admin/conseillers">Conseillers</router-link>
               </div>
           </div>
 
@@ -25,10 +26,16 @@
 </template>
 
 <style scoped>
+.admin {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 #sidebar-wrapper {
   position: fixed; /* Fixe le menu sur place */
   left: 0; /* Place le menu à gauche de la page */
-  width: 15rem; /* Définit la largeur du menu */
+  width: 20%; /* Définit la largeur du menu */
   height: 100%; /* Ajuste la hauteur du menu à la hauteur de la page */
   overflow-x: hidden; /* Cache tout contenu dépassant la largeur du menu */
   padding: 1.25rem 1.25rem; /* Ajoute de l'espace autour du contenu du menu */
@@ -37,6 +44,7 @@
 #page-content-wrapper {
   width: 100%; /* Définit la largeur du contenu de la page */
   padding: 1.25rem 1.25rem; /* Ajoute de l'espace autour du contenu de la page */
+  margin-left: 20%;
 }
 
 #sidebar-wrapper .list-group-item {
