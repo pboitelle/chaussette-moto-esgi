@@ -10,6 +10,7 @@
                   <router-link class="list-group-item list-group-item-action bg-light" to="/admin/communications">Communications</router-link>
                   <router-link class="list-group-item list-group-item-action bg-light" to="/admin/salons">Salons</router-link>
                   <router-link class="list-group-item list-group-item-action bg-light" to="/admin/conseillers">Conseillers</router-link>
+                  <router-link class="list-group-item list-group-item-action bg-light" to="/admin/notifs">Notifications</router-link>
               </div>
           </div>
 

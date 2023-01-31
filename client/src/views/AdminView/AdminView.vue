@@ -2,13 +2,15 @@
 import AdminUsersViewVue from './AdminUsersView.vue';
 import AdminCommunicationsViewVue from './AdminComsView.vue';
 import AdminSalonsViewVue from './AdminSalonsView.vue';
+import AdminNotifViewVue from './AdminNotifView.vue';
 
 export default {
   name: 'AdminView',
   components: {
     AdminUsersViewVue,
     AdminCommunicationsViewVue,
-    AdminSalonsViewVue
+    AdminSalonsViewVue,
+    AdminNotifViewVue
   }
 }
 </script>

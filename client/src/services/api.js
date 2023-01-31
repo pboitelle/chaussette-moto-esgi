@@ -36,6 +36,26 @@ export async function getSalons() {
     const response = await request.get("/api/salons");
 
     return response.data.rows;
+
+}
+
+function createRequestSse() {
+    return axios.create({
+        baseURL: "http://localhost:9001",
+        headers: {
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache"
+        }
+    });
+}
+
+//get notifications
+export async function getNotifications() {
+    const request = createRequestSse();
+
+    const response = await request.get("/api/notifications");
+
+    return response.data.rows;
 }
 
 export async function checkDemande() {
@@ -48,4 +68,12 @@ export async function checkDemande() {
     } else {
         return false;
     }
+}
+//post notifications
+export async function postNotifications(message) {
+    const request = createRequestSse();
+    console.log("message",message)
+    const response = await request.post("/api/notifications", {message: message});
+
+    return response.data.rows;
 }

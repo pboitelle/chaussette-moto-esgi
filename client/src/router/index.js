@@ -7,7 +7,9 @@ import Admin from '../views/AdminView/AdminView.vue'
 import AdminUsersViewVue from '../views/AdminView/AdminUsersView.vue'
 import AdminCommunicationsViewVue from '../views/AdminView/AdminComsView.vue'
 import AdminSalonsViewVue from '../views/AdminView/AdminSalonsView.vue'
+
 import AdminConseillersViewVue from '../views/AdminView/AdminConseillersView.vue'
+import AdminNotifViewVue from '../views/AdminView/AdminNotifView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -99,6 +101,16 @@ const router = createRouter({
         },
       ],
     },
+    {
+      path: '/admin/notifs',
+      component: BaseRouterView,
+      children: [
+        {
+          path: '',
+          component: AdminNotifViewVue,
+        },
+      ],
+    }
   ]
 })
 

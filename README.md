@@ -23,8 +23,16 @@ npm install
 npm run start:client
 ```
 
-### Compile and Minify for Production
+## Setup Server
 
 ```sh
-npm run build
+cd server/
+docker-compose up -d
+docker-compose exec node npm install
+```
+
+### Launch Development Server
+
+```sh
+docker-compose exec node npm run start:server
 ```

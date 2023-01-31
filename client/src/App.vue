@@ -24,7 +24,7 @@ const closeModal = () => {
   <NavBar />
 
   <RouterView />
-
+  
   <div class="chatbot" @click="closeModal" v-if="showModal">
     <img :src="crossSVG" alt="crossChatbot">
   </div>

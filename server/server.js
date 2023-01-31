@@ -6,6 +6,8 @@ import session from "express-session"
 import path, { dirname } from "path"
 import { fileURLToPath } from 'url'
 import cors from "cors"
+import { EventEmitter } from "events"
+import bodyParser from 'body-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -293,7 +295,6 @@ const io = new Server(httpServer, {
     }
 })
 
-
 /*
   Socket.io events
 */
@@ -350,3 +351,57 @@ io.on("connection", socket => {
     });
   })
 })
+
+const eventEmitter = new EventEmitter()
+
+const serversse = express()
+serversse.use(cors())
+serversse.use(bodyParser.json());
+
+serversse.post("/api/notifications", (req, res) => {
+  console.log("back",req.body)
+  const { message }= req.body;
+  if (!req.body) {
+    return res.status(400).send({ error: 'Request body is missing' });
+  }
+  connection.query(
+    "INSERT INTO notifications (message) VALUES (?)",
+    [message],
+    (err, rows) => {
+      if (err) {
+        res.json({
+          success: false,
+          err,
+        });
+      } else {
+        res.json({
+          success: true,
+          rows,
+        });
+        eventEmitter.emit("notification", message)
+      }
+    }
+  );
+});
+
+serversse.get("/api/notifications", (req, res) => {
+  connection.query("SELECT * FROM notifications", (err, rows) => {
+    if (err) {
+      res.json({
+        success: false,
+        err,
+      });
+    } else {
+      res.json({
+        success: true,
+        rows,
+      });
+    }
+  });
+});
+
+serversse.listen(9001)
+
+setInterval(() => {
+  eventEmitter.emit("notification", "Hello")
+}, 5000)
