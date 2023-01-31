@@ -8,8 +8,6 @@ import Modal from './components/Modal.vue'
 import chatbotSVG from './assets/chatbot.svg'
 import crossSVG from './assets/cross.svg'
 
-import NotifsView from './components/NotifsView.vue';
-
 const showModal = ref(false)
 
 const openModal = () => {
@@ -26,7 +24,6 @@ const closeModal = () => {
   <NavBar />
 
   <RouterView />
-  <notification-banner />
   
   <div class="chatbot" @click="closeModal" v-if="showModal">
     <img :src="crossSVG" alt="crossChatbot">
